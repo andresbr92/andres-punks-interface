@@ -1,11 +1,14 @@
-import Web3 from 'web3';
-import { InjectedConnector } from 'web3-react/dist/connectors';
+import Web3 from "web3";
+import { InjectedConnector } from "@web3-react/injected-connector";
+
 const connector = new InjectedConnector({
-  supportedNetworks: [
-    4 // Rinkeby
-  ]
+  supportedChainIds: [
+    4, // Rinkeby
+  ],
 });
+
 const getLibrary = (provider) => {
-  return Web3(provider);
+  return new Web3(provider);
 };
+
 export { connector, getLibrary };
