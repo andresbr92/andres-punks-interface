@@ -732,5 +732,4 @@ const AndresPunksArtifact = {
   ]
 };
 
-export default AndresPunksArtifact
-;
+export default AndresPunksArtifact;
