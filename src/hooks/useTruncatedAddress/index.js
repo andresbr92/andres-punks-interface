@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo } from 'react';
 
 const useTruncatedAddress = (account) => {
   const truncated = useMemo(

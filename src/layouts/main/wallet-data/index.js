@@ -22,12 +22,12 @@ const WalletData = () => {
 
   const connect = useCallback(() => {
     activate(connector);
-    localStorage.setItem('previouslyConnected', 'true');
+    window.localStorage.setItem('previouslyConnected', 'true');
   }, [activate]);
 
   const disconnect = () => {
     deactivate();
-    localStorage.removeItem('previouslyConnected');
+    window.localStorage.removeItem('previouslyConnected');
   };
 
   const getBalance = useCallback(async () => {
@@ -40,7 +40,7 @@ const WalletData = () => {
   }, [active, getBalance]);
 
   useEffect(() => {
-    if (localStorage.getItem('previouslyConnected') === 'true') connect();
+    if (window.localStorage.getItem('previouslyConnected') === 'true') connect();
   }, [connect]);
 
   const truncatedAddress = useTruncatedAddress(account);
