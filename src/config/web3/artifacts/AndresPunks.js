@@ -1,6 +1,6 @@
 const AndresPunksArtifact = {
   address: {
-    4: ''
+    4: '0x2e980939B22D4e61e63CE25644443b17c1792401'
   },
   abi: [
     {
