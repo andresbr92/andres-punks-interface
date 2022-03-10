@@ -1,3 +1,4 @@
+import { useWeb3React } from '@web3-react/core';
 import { useCallback, useEffect, useState } from 'react';
 import useAndresPunks from '../useAndresPunks';
 
@@ -66,19 +67,32 @@ const getPunkData = async ({ andresPunks, tokenId }) => {
   };
 };
 // Plural
-const useAndresPunksData = () => {
+const useAndresPunksData = ({ owner = null } = {}) => {
   const [punks, setPunks] = useState([]);
+  const { library } = useWeb3React();
   const [loading, setLoading] = useState(true);
   const andresPunks = useAndresPunks();
 
   const update = useCallback(async () => {
     if (andresPunks) {
       setLoading(true);
+      let tokenIds;
+      if (!library.utils.isAddress(owner)) {
+        const totalSupply = await andresPunks.methods.totalSupply().call();
+        tokenIds = new Array(Number(totalSupply))
+          .fill()
+          .map((_, index) => index);
+      } else {
+        const balanceOf = await andresPunks.methods.balanceOf(owner).call();
 
-      const totalSupply = await andresPunks.methods.totalSupply().call();
-      const tokenIds = new Array(Number(totalSupply))
-        .fill()
-        .map((_, index) => index);
+        const tokenIdsOfOwner = new Array(Number(balanceOf))
+          .fill()
+          .map((_, index) =>
+            andresPunks.methods.tokenOfOwnerByIndex(owner, index).call()
+          );
+
+        tokenIds = await Promise.all(tokenIdsOfOwner);
+      }
 
       const punksPromise = tokenIds.map((tokenId) =>
         getPunkData({ tokenId, andresPunks })
@@ -89,7 +103,7 @@ const useAndresPunksData = () => {
       setPunks(punks);
       setLoading(false);
     }
-  }, [andresPunks]);
+  }, [andresPunks, owner, library?.utils]);
 
   useEffect(() => {
     update();
