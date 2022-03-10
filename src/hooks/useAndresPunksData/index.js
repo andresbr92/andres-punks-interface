@@ -76,7 +76,9 @@ const useAndresPunksData = () => {
       setLoading(true);
 
       const totalSupply = await andresPunks.methods.totalSupply().call();
-      const tokenIds = new Array(Number(totalSupply)).fill().map((_, index) => index);
+      const tokenIds = new Array(Number(totalSupply))
+        .fill()
+        .map((_, index) => index);
 
       const punksPromise = tokenIds.map((tokenId) =>
         getPunkData({ tokenId, andresPunks })
@@ -101,8 +103,31 @@ const useAndresPunksData = () => {
 };
 
 // Singular
-// const usePlatziPunkData = () => {
+const useAndresPunkData = (tokenId = null) => {
+  const [punk, setPunk] = useState({});
+  const [loading, setLoading] = useState(true);
+  const andresPunks = useAndresPunks();
 
-// }
+  const update = useCallback(async () => {
+    if (andresPunks && tokenId != null) {
+      setLoading(true);
 
-export { useAndresPunksData };
+      const toSet = await getPunkData({ tokenId, andresPunks });
+      setPunk(toSet);
+
+      setLoading(false);
+    }
+  }, [andresPunks, tokenId]);
+
+  useEffect(() => {
+    update();
+  }, [update]);
+
+  return {
+    loading,
+    punk,
+    update
+  };
+};
+
+export { useAndresPunksData, useAndresPunkData };
