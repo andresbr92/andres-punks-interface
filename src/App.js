@@ -6,11 +6,15 @@ import Punk from './views/punk';
 
 function App () {
   return (
-    <MainLayout>
-      <Route path='/' exact component={Home} />
-      <Route path='/punks' exact component={Punks} />
-      <Route path='/punks/:tokenId' exact component={Punk} />
-    </MainLayout>
+    <div className='min-h-screen'>
+      <div className='gradient-bg-welcome'>
+        <MainLayout>
+          <Route path='/' exact component={Home} />
+          <Route path='/punks' exact component={Punks} />
+          <Route path='/punks/:tokenId' exact component={Punk} />
+        </MainLayout>
+      </div>
+    </div>
   );
 }
 

@@ -12,12 +12,14 @@ import { Link } from 'react-router-dom';
 import { useWeb3React } from '@web3-react/core';
 import { useCallback, useEffect, useState } from 'react';
 import useAndresPunks from '../../hooks/useAndresPunks';
+import useTruncatedAddress from '../../hooks/useTruncatedAddress';
 const Home = () => {
   const [isMinting, setIsMinting] = useState(false);
   const [imageSrc, setImageSrc] = useState('');
   const { active, account } = useWeb3React();
   const andresPunks = useAndresPunks();
   const toast = useToast();
+  const truncatedAddress = useTruncatedAddress(account);
 
   const getAndresPunksData = useCallback(async () => {
     if (active) {
@@ -81,16 +83,8 @@ const Home = () => {
           >
             <Text
               as='span'
-              position='relative'
-              _after={{
-                content: "''",
-                width: 'full',
-                height: '30%',
-                position: 'absolute',
-                bottom: 1,
-                left: 0,
-                bg: 'green.400',
-                zIndex: -1
+              style={{
+                color: '#FFCD00'
               }}
             >
               Andres Punks
@@ -101,14 +95,11 @@ const Home = () => {
             </Text>
           </Heading>
           <Text color='gray.500'>
-            Andres Punks es una colección de Avatares randomizados cuya metadata
-            es almacenada on-chain. Poseen características únicas y sólo hay
-            10000 en existencia.
+            Andres Punks is a collection of random Avatars whose metadata is stored on-chain. They have unique characteristics and there are only 10,000 in existence
           </Text>
           <Text color='green.500'>
-            Cada Andres Punk se genera de forma secuencial basado en tu address,
-            usa el previsualizador para averiguar cuál sería tu Andres Punk si
-            minteas en este momento
+
+            Each Andres Punk is generated sequentially based on your address, use the preview to find out what your Andres Punk would be if you mint your NFT right now.
           </Text>
           <Stack
             spacing={{ base: 4, sm: 6 }}
@@ -126,11 +117,11 @@ const Home = () => {
               onClick={mint}
               isLoading={isMinting}
             >
-              Obtén tu punk
+              Get Punk
             </Button>
             <Link to='/punks'>
               <Button rounded='full' size='lg' fontWeight='normal' px={6}>
-                Galería
+                Gallery
               </Button>
             </Link>
           </Stack>
@@ -141,7 +132,11 @@ const Home = () => {
           justify='center'
           align='center'
           position='relative'
-          w='full'
+          // w='full'
+          className='gradient-bg-services'
+          border='3px solid grey'
+          borderRadius='5px'
+          maxWidth='35%'
         >
           <Image src={active ? imageSrc : 'https://avataaars.io/'} />
           {active
@@ -157,7 +152,7 @@ const Home = () => {
                   <Badge ml={2}>
                     Address:
                     <Badge ml={1} colorScheme='green'>
-                      0x0000...0000
+                      {truncatedAddress}
                     </Badge>
                   </Badge>
                 </Flex>
@@ -167,12 +162,12 @@ const Home = () => {
                   size='xs'
                   colorScheme='green'
                 >
-                  Actualizar
+                  Update
                 </Button>
               </>
               )
             : (
-              <Badge mt={2}>Wallet desconectado</Badge>
+              <Badge mt={2}>Wallet disconnected</Badge>
               )}
         </Flex>
       </Stack>

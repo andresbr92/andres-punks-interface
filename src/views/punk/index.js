@@ -48,7 +48,7 @@ const Punk = () => {
         })
         .on('transactionHash', (txHash) => {
           toast({
-            title: 'Transaccion en proceso',
+            title: 'Transaction in progress',
             description: `Transfering: ${txHash}`,
             status: 'info'
           });
@@ -57,7 +57,7 @@ const Punk = () => {
           setTransfering(false);
           toast({
             title: 'Transaction Complete',
-            description: 'El Punk ahora pertenece a ' + address,
+            description: 'The owner now is' + address,
             status: 'success'
           });
           update();
